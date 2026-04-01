@@ -1,6 +1,6 @@
-package ui.screen
+package com.movie.ui.screen
 
-import ui.components.MovieItem
+import com.movie.ui.theme.components.MovieItem
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
