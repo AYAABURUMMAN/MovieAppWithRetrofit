@@ -12,7 +12,7 @@ object MovieApi {
     private const val BASE_URL = "https://69cd5800ddc3cabb7bd28968.mockapi.io/movies"
 
     suspend fun getMovies(): List<Movie> {
-        return withContext(Dispatchers.IO) {  // شغّل على background thread
+        return withContext(Dispatchers.IO) {
             val url = URL(BASE_URL)
             val connection = url.openConnection() as HttpURLConnection
 
