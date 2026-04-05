@@ -49,7 +49,9 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
 
-
+// Retrofit for API calls
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
 // Coil for image loading
     implementation("io.coil-kt:coil-compose:2.4.0")
@@ -58,7 +60,5 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.ui)
-    implementation(libs.androidx.junit.ktx)
     debugImplementation(libs.androidx.ui.tooling)
-    testImplementation(kotlin("test"))
 }
