@@ -40,7 +40,7 @@ object MovieApi {
 
     private fun parseMovies(json: String): List<Movie> {
         val movies = mutableListOf<Movie>()
-        val jsonArray = JSONArray(json)  // هاد موجود بـ Android بدون library
+        val jsonArray = JSONArray(json)
 
         for (i in 0 until jsonArray.length()) {
             val obj = jsonArray.getJSONObject(i)

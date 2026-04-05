@@ -23,7 +23,7 @@ class MovieViewModel : ViewModel() {
     private fun fetchMovies() {
         viewModelScope.launch {
             try {
-                _movieList.value = MovieApi.getMovies()   // ← هاد الفرق الوحيد
+                _movieList.value = MovieApi.getMovies()
             } catch (e: Exception) {
                 Log.e("MovieViewModel", "Error: ${e.message}")
             }
