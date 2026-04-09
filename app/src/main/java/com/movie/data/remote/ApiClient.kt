@@ -1,5 +1,4 @@
 package com.movie.data.remote
-
 import io.nerdythings.okhttp.profiler.BuildConfig
 import io.nerdythings.okhttp.profiler.OkHttpProfilerInterceptor
 import okhttp3.OkHttpClient
