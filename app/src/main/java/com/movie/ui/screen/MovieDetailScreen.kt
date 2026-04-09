@@ -42,7 +42,7 @@ fun MovieDetailScreen(
     viewModel: MovieViewModel = viewModel(),
     onBack: () -> Unit = {}
 ) {
-    // لما تفتح الشاشة تجيب تفاصيل الفيلم بالـ ID
+
     LaunchedEffect(movieId) {
         viewModel.fetchMovieDetail(movieId)
     }
@@ -78,7 +78,7 @@ fun MovieDetailScreen(
                     .padding(innerPadding)
                     .verticalScroll(rememberScrollState())
             ) {
-                // صورة الخلفية
+
                 AsyncImage(
                     model = "https://image.tmdb.org/t/p/w500${movie.backdropPath}",
                     contentDescription = movie.title,

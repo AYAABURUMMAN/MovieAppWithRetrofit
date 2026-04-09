@@ -12,31 +12,28 @@ import kotlinx.coroutines.launch
 
 class MovieViewModel : ViewModel() {
 
-
     private val _movieList = MutableStateFlow<List<Movies>>(emptyList())
     val movieList: StateFlow<List<Movies>> = _movieList
 
+    private val _movieDetail = MutableStateFlow<MovieDetail?>(null)
+    val movieDetail: StateFlow<MovieDetail?> = _movieDetail
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
+
     private val apiService = ApiClient.create()
 
-    init {
-        fetchMovies()
-    }
+    init { fetchMovies() }
 
     fun fetchMovies() {
         viewModelScope.launch {
             try {
-
                 _movieList.value = apiService.getMovies().results
             } catch (e: Exception) {
                 Log.e("MovieViewModel", "Error: ${e.message}")
             }
         }
     }
-    private val _movieDetail = MutableStateFlow<MovieDetail?>(null)
-    val movieDetail: StateFlow<MovieDetail?> = _movieDetail
-
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading
 
     fun fetchMovieDetail(movieId: Int) {
         viewModelScope.launch {

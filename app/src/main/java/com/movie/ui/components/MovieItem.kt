@@ -24,10 +24,10 @@ import coil.compose.AsyncImage
 import com.movie.data.models.Movies
 
 @Composable
-fun MovieItem(
+fun MovieItem( modifier: Modifier = Modifier,
     movie: Movies,
-    onClick: (Int) -> Unit = {},  // ← لما يضغط يمرر الـ ID
-    modifier: Modifier = Modifier
+    onClick: (Int) -> Unit = {}
+
 ) {
     Card(
         modifier = modifier
@@ -41,7 +41,7 @@ fun MovieItem(
             modifier = Modifier.padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // الصورة
+
             AsyncImage(
                 model = "https://image.tmdb.org/t/p/w500${movie.posterPath}",
                 contentDescription = movie.title,
@@ -55,7 +55,7 @@ fun MovieItem(
             Spacer(modifier = Modifier.width(12.dp))
 
             Column(modifier = Modifier.weight(1f)) {
-                // الاسم
+
                 Text(
                     text = movie.title ?: "",
                     style = MaterialTheme.typography.titleMedium,
@@ -64,14 +64,14 @@ fun MovieItem(
                 )
                 Spacer(modifier = Modifier.height(4.dp))
 
-                // التقييم
+
                 Text(
                     text = "⭐ ${"%.1f".format(movie.voteAverage)}",
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Spacer(modifier = Modifier.height(4.dp))
 
-                // التاريخ
+
                 Text(
                     text = movie.releaseDate ?: "",
                     style = MaterialTheme.typography.bodySmall,
@@ -79,7 +79,7 @@ fun MovieItem(
                 )
                 Spacer(modifier = Modifier.height(6.dp))
 
-                // الوصف
+
                 Text(
                     text = movie.overview ?: "",
                     maxLines = 3,

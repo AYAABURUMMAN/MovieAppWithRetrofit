@@ -1,3 +1,9 @@
+package com.movie
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -12,7 +18,20 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.movie.ui.screen.MovieDetailScreen
 import com.movie.ui.screen.MovieListScreen
+import com.movie.ui.theme.MovieAppTheme
 import com.movie.viewmodel.MovieViewModel
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            MovieAppTheme {
+                MovieApp()
+            }
+        }
+    }
+}
 
 @Composable
 fun MovieApp() {
@@ -28,7 +47,6 @@ fun MovieApp() {
             navController = navController,
             startDestination = "movie_list"
         ) {
-            // شاشة الليست
             composable("movie_list") {
                 MovieListScreen(
                     viewModel = viewModel,
@@ -38,7 +56,6 @@ fun MovieApp() {
                 )
             }
 
-            // شاشة الديتيل
             composable(
                 route = "movie_detail/{movieId}",
                 arguments = listOf(navArgument("movieId") { type = NavType.IntType })
