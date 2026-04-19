@@ -2,7 +2,6 @@ package com.movie.data.models
 
 import com.google.gson.annotations.SerializedName
 
-
 data class
 Movies (
 
@@ -20,5 +19,4 @@ Movies (
   @SerializedName("video"             ) var video            : Boolean?       = null,
   @SerializedName("vote_average"      ) var voteAverage      : Double?        = null,
   @SerializedName("vote_count"        ) var voteCount        : Int?           = null
-
 )

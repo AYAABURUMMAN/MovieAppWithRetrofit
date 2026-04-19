@@ -42,6 +42,7 @@ android {
 }
 
 dependencies {
+
     // Jetpack Compose & Material3
     implementation(platform("androidx.compose:compose-bom:2025.01.00"))
     implementation("androidx.compose.material3:material3")
@@ -64,4 +65,7 @@ dependencies {
     implementation(libs.androidx.junit.ktx)
     debugImplementation(libs.androidx.ui.tooling)
     testImplementation(kotlin("test"))
+    // Paging 3
+    implementation("androidx.paging:paging-runtime:3.2.1")
+    implementation("androidx.paging:paging-compose:3.2.1")
 }
