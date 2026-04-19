@@ -14,8 +14,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -31,12 +29,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import com.movie.data.models.Movies
 import com.movie.viewmodel.MovieViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,7 +48,7 @@ fun MovieDetailScreen(
 
     val detail by viewModel.movieDetail.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
-    val isSaved by viewModel.isSaved.collectAsState()
+
 
     Scaffold(
         topBar = {
@@ -66,34 +62,8 @@ fun MovieDetailScreen(
                             contentDescription = "Back"
                         )
                     }
-                },
-                actions = {
-
-                    IconButton(
-                        onClick = {
-                            detail?.let { movieDetail ->
-                                val movie = Movies(
-                                    id = movieDetail.id,
-                                    title = movieDetail.title,
-                                    overview = movieDetail.overview,
-                                    posterPath = movieDetail.posterPath,
-                                    backdropPath = movieDetail.backdropPath,
-                                    voteAverage = movieDetail.voteAverage,
-                                    releaseDate = movieDetail.releaseDate
-                                )
-                                viewModel.toggleSaveMovie(movie)
-                            }
-                        }
-                    ) {
-                        Icon(
-                            imageVector = if (isSaved) Icons.Filled.Favorite
-                            else Icons.Outlined.FavoriteBorder,
-                            contentDescription = if (isSaved) "Remove from favorites"
-                            else "Add to favorites",
-                            tint = if (isSaved) Color.Red else Color.Gray
-                        )
-                    }
                 }
+
             )
         }
     ) { innerPadding ->
