@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
+import com.movie.data.local.MovieDatabaseHelper
 import com.movie.data.models.MovieDetail
 import com.movie.data.paging.MoviePagingSource
 import com.movie.data.remote.ApiClient
@@ -18,7 +19,15 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
 
     private val apiService = ApiClient.create()
 
+    private val dbHelper = MovieDatabaseHelper(application)
 
+
+    private val _isFavorite = MutableStateFlow(false)
+    val isFavorite: StateFlow<Boolean> = _isFavorite
+
+
+    private val _favorites = MutableStateFlow<List<MovieDetail>>(emptyList())
+    val favorites: StateFlow<List<MovieDetail>> = _favorites
     // Paging
     val moviePager = Pager(
         config = PagingConfig(
@@ -44,6 +53,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
             try {
                 _movieDetail.value = apiService.getMovieDetail(movieId)
 
+                _isFavorite.value = dbHelper.isFavorite(movieId)
             } catch (e: Exception) {
                 Log.e("MovieViewModel", "Error: ${e.message}")
             } finally {
@@ -52,4 +62,25 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun toggleFavorite(movie: MovieDetail) {
+        viewModelScope.launch {
+            if (_isFavorite.value) {
+
+                dbHelper.deleteMovie(movie.id ?: return@launch)
+                _isFavorite.value = false
+            } else {
+
+                dbHelper.insertMovie(movie)
+                _isFavorite.value = true
+            }
+        }
+    }
+
+
+    fun loadFavorites() {
+        viewModelScope.launch {
+            _favorites.value = dbHelper.getAllMovies()
+        }
+    }
 }
+
