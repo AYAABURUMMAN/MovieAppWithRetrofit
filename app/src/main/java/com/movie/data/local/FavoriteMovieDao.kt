@@ -13,7 +13,6 @@ interface FavoriteMovieDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(movie: FavoriteMovie)
-
     @Delete
     suspend fun delete(movie: FavoriteMovie)
 

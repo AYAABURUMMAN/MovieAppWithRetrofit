@@ -1,5 +1,6 @@
 package com.movie.ui.screen
 
+import android.content.Intent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -33,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
@@ -51,8 +54,8 @@ fun MovieDetailScreen(
 
     val detail by viewModel.movieDetail.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
-
     val isFavorite by viewModel.isFavorite.collectAsState()
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -67,8 +70,30 @@ fun MovieDetailScreen(
                         )
                     }
                 },
-
                 actions = {
+                    IconButton(
+                        onClick = {
+                            detail?.let { movie ->
+                                val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                                    type = "text/plain"
+                                    putExtra(Intent.EXTRA_SUBJECT, movie.title)
+                                    putExtra(
+                                        Intent.EXTRA_TEXT,
+                                        "🎬 ${movie.title}\n⭐ ${"%.1f".format(movie.voteAverage)}/10\n📅 ${movie.releaseDate}\n\n${movie.overview}"
+                                    )
+                                }
+                                context.startActivity(
+                                    Intent.createChooser(shareIntent, "Share Movie")
+                                )
+                            }
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Share,
+                            contentDescription = "Share"
+                        )
+                    }
+
                     IconButton(
                         onClick = {
                             detail?.let { viewModel.toggleFavorite(it) }
