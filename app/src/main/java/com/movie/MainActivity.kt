@@ -106,20 +106,17 @@ fun MovieApp() {
                 modifier = Modifier.padding(innerPadding)
             ) {
 
-                // ── Auth ─────────────────────────────────────────────────────
                 composable("auth") {
                     AuthScreen(
                         viewModel = authViewModel,
                         onAuthSuccess = {
                             navController.navigate("home") {
-                                // لا يقدر يرجع لشاشة الـ auth بضغطة Back
                                 popUpTo("auth") { inclusive = true }
                             }
                         }
                     )
                 }
 
-                // ── Home ─────────────────────────────────────────────────────
                 composable("home") {
                     MovieListScreen(
                         viewModel = movieViewModel,
@@ -129,7 +126,6 @@ fun MovieApp() {
                     )
                 }
 
-                // ── Favourites ───────────────────────────────────────────────
                 composable("favourites") {
                     FavouriteScreen(
                         viewModel = movieViewModel,
@@ -139,7 +135,6 @@ fun MovieApp() {
                     )
                 }
 
-                // ── Movie Detail ─────────────────────────────────────────────
                 composable(
                     route = "movie_detail/{movieId}",
                     arguments = listOf(navArgument("movieId") { type = NavType.IntType })
