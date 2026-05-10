@@ -44,13 +44,11 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
-    // Paging
     val moviePager = Pager(
         config = PagingConfig(pageSize = 20, enablePlaceholders = false),
         pagingSourceFactory = { MoviePagingSource(apiService) }
     ).flow.cachedIn(viewModelScope)
 
-    // Detail
     private val _movieDetail = MutableStateFlow<MovieDetail?>(null)
     val movieDetail: StateFlow<MovieDetail?> = _movieDetail
 
@@ -59,7 +57,6 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
 
     fun fetchMovieDetail(movieId: Int) {
         _currentMovieId.value = movieId
-
         viewModelScope.launch {
             _isLoading.value = true
             try {
@@ -74,9 +71,6 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
 
     fun toggleFavorite(movie: MovieDetail) {
         viewModelScope.launch {
-            val currentlyFavorite = _currentMovieId.value?.let { id ->
-                dao.isFavorite(id).map { it > 0 }
-            }
             if (isFavorite.value) {
                 dao.delete(movie.toFavoriteMovie())
             } else {

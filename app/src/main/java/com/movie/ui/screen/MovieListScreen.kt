@@ -40,8 +40,6 @@ fun MovieListScreen(
             )
         }
     ) { innerPadding ->
-
-
         if (movies.loadState.refresh is LoadState.Loading) {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -51,7 +49,6 @@ fun MovieListScreen(
             }
             return@Scaffold
         }
-
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -66,8 +63,7 @@ fun MovieListScreen(
                     )
                 }
             }
-
-
+            
             when (movies.loadState.append) {
                 is LoadState.Loading -> {
                     item {

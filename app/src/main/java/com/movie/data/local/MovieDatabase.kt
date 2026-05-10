@@ -5,10 +5,14 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [FavoriteMovie::class], version = 1)
+@Database(
+    entities = [FavoriteMovie::class, User::class],
+    version = 2
+)
 abstract class MovieDatabase : RoomDatabase() {
 
     abstract fun favoriteMovieDao(): FavoriteMovieDao
+    abstract fun userDao(): UserDao
 
     companion object {
         @Volatile
@@ -20,7 +24,10 @@ abstract class MovieDatabase : RoomDatabase() {
                     context.applicationContext,
                     MovieDatabase::class.java,
                     "movies.db"
-                ).build().also { INSTANCE = it }
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
+                    .also { INSTANCE = it }
             }
         }
     }

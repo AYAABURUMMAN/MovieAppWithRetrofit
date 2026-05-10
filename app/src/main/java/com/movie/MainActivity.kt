@@ -28,10 +28,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.movie.ui.screen.AuthScreen
 import com.movie.ui.screen.FavouriteScreen
 import com.movie.ui.screen.MovieDetailScreen
 import com.movie.ui.screen.MovieListScreen
 import com.movie.ui.theme.MovieAppTheme
+import com.movie.viewmodel.AuthViewModel
 import com.movie.viewmodel.MovieViewModel
 
 class MainActivity : ComponentActivity() {
@@ -49,11 +51,18 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MovieApp() {
     val navController = rememberNavController()
-
     val application = (LocalContext.current.applicationContext as android.app.Application)
-    val viewModel: MovieViewModel = viewModel(
+
+    // ViewModels
+    val authViewModel: AuthViewModel = viewModel(
+        factory = AuthViewModel.factory(application)
+    )
+    val movieViewModel: MovieViewModel = viewModel(
         factory = MovieViewModel.factory(application)
     )
+
+    // If already logged in → go straight to home, else auth
+    val startDestination = if (authViewModel.isLoggedIn) "home" else "auth"
 
     val bottomNavItems = listOf(
         Triple("home", "Home", Icons.Filled.Home),
@@ -93,27 +102,44 @@ fun MovieApp() {
         ) { innerPadding ->
             NavHost(
                 navController = navController,
-                startDestination = "home",
+                startDestination = startDestination,
                 modifier = Modifier.padding(innerPadding)
             ) {
+
+                // ── Auth ─────────────────────────────────────────────────────
+                composable("auth") {
+                    AuthScreen(
+                        viewModel = authViewModel,
+                        onAuthSuccess = {
+                            navController.navigate("home") {
+                                // لا يقدر يرجع لشاشة الـ auth بضغطة Back
+                                popUpTo("auth") { inclusive = true }
+                            }
+                        }
+                    )
+                }
+
+                // ── Home ─────────────────────────────────────────────────────
                 composable("home") {
                     MovieListScreen(
-                        viewModel = viewModel,
+                        viewModel = movieViewModel,
                         onMovieClick = { movieId ->
                             navController.navigate("movie_detail/$movieId")
                         }
                     )
                 }
 
+                // ── Favourites ───────────────────────────────────────────────
                 composable("favourites") {
                     FavouriteScreen(
-                        viewModel = viewModel,
+                        viewModel = movieViewModel,
                         onMovieClick = { movieId ->
                             navController.navigate("movie_detail/$movieId")
                         }
                     )
                 }
 
+                // ── Movie Detail ─────────────────────────────────────────────
                 composable(
                     route = "movie_detail/{movieId}",
                     arguments = listOf(navArgument("movieId") { type = NavType.IntType })
@@ -121,7 +147,7 @@ fun MovieApp() {
                     val movieId = backStackEntry.arguments?.getInt("movieId") ?: return@composable
                     MovieDetailScreen(
                         movieId = movieId,
-                        viewModel = viewModel,
+                        viewModel = movieViewModel,
                         onBack = { navController.popBackStack() }
                     )
                 }
