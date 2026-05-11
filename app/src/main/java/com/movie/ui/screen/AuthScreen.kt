@@ -105,7 +105,6 @@ fun AuthScreen(
             }
         }
 
-
         Card(
             modifier = Modifier
                 .fillMaxSize()
@@ -121,7 +120,6 @@ fun AuthScreen(
                     .padding(horizontal = 36.dp)
             ) {
                 Spacer(modifier = Modifier.height(8.dp))
-
 
                 Row(modifier = Modifier.fillMaxWidth()) {
                     AuthTab(

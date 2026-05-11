@@ -39,7 +39,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
             _authState.value = AuthState.Loading
             val user = userDao.login(email.trim(), password)
             if (user != null) {
-                prefs.edit().putBoolean("is_logged_in", true).apply()
+                prefs.edit().putBoolean("is_logged_in", false).apply()
                 _authState.value = AuthState.Success
             } else {
                 _authState.value = AuthState.Error("Invalid email or password")
@@ -72,14 +72,12 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 return@launch
             }
             userDao.registerUser(User(email = email.trim(), password = password))
-            prefs.edit().putBoolean("is_logged_in", true).apply()
+            prefs.edit().putBoolean("is_logged_in", false).apply()
             _authState.value = AuthState.Success
         }
     }
 
-    fun logout() {
-        prefs.edit().putBoolean("is_logged_in", false).apply()
-    }
+
 
     fun resetState() {
         _authState.value = AuthState.Idle
